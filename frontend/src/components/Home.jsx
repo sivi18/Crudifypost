@@ -9,7 +9,11 @@ function Home() {
   const postStatus = useSelector(PostStatus);
 
   if (postStatus === "pending") {
-    return <div className="mt-2 text-2xl">Loading...</div>;
+    return (
+      <div className="min-h-screen w-full top-2 flex items-center justify-center">
+        <p className=" text-4xl">Loading..</p>
+      </div>
+    );
   }
 
   return (
