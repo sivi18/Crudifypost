@@ -6,6 +6,7 @@ import Timelayout from "./Time";
 
 function Singlepost() {
   const { id } = useParams();
+  console.log(id);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const selectedPost = useSelector((state) => selectById(state, id));
@@ -25,13 +26,13 @@ function Singlepost() {
           className="bg-blue-200 p-10 rounded-lg shadow-md mt-2"
         >
           <h2 className="text-2xl mb-2">
-            {selectedPost.title.charAt(0).toUpperCase() +
-              selectedPost.title.slice(1)}
+            {selectedPost?.title?.slice(0).toUpperCase() +
+              selectedPost?.title?.slice(1)}
           </h2>
           <p className="mb-2">{selectedPost.body}</p>
           <div className="flex items-center justify-start gap-5">
             <Link
-              to={`/Editpost/${selectedPost.id}`}
+              to={`/Editpost/${selectedPost._id}`}
               className="underline hover:scale-105"
             >
               Edit Post
@@ -43,7 +44,7 @@ function Singlepost() {
               Delete Post
             </Link>
           </div>
-          <Timelayout time={selectedPost.date} />
+          {/* <Timelayout time={selectedPost.date} /> */}
         </div>
       )}
     </div>

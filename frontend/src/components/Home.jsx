@@ -23,18 +23,18 @@ function Home() {
           {allPost &&
             allPost.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="bg-blue-200 h-full w-full rounded ml-2 p-2  hover:scale-105 transition-transform"
               >
                 <h2 className="text-2xl mb-2">
                   {item.title.charAt(0).toUpperCase() + item.title.slice(1)}
                 </h2>
                 <p className="mb-2">{item.body}</p>
-                <Link to={`/viewpost/${item.id}`} className=" underline">
+                <Link to={`/viewpost/${item._id}`} className="underline">
                   View Post
                 </Link>
                 <br />
-                <Timelayout time={item.date} />
+                {/* <Timelayout time={item.createdAt} /> */}
               </div>
             ))}
         </div>

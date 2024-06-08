@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { AddnewPost } from "../slices/CrudifSlice";
 import { useDispatch } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
 import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { nanoid } from "@reduxjs/toolkit";
 function NewPost() {
   const [postTitle, setPostTitle] = useState("");
   const [postDesc, setPostDesc] = useState("");
@@ -17,7 +17,7 @@ function NewPost() {
     if (save) {
       try {
         await dispatch(
-          AddnewPost({ id: nanoid(), title: postTitle, body: postDesc })
+          AddnewPost({ userId: nanoid(), title: postTitle, body: postDesc })
         ).unwrap();
         toast.success("Post Added");
         setPostTitle("");

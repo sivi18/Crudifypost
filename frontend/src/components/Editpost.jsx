@@ -8,6 +8,7 @@ import { UpdatePost, selectById } from "../slices/CrudifSlice";
 function Editpost() {
   const { id } = useParams();
   const TargetPost = useSelector((state) => selectById(state, id));
+  console.log(TargetPost);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -26,7 +27,11 @@ function Editpost() {
     if (save) {
       try {
         await dispatch(
-          UpdatePost({ id: TargetPost.id, title: postTitle, body: postDesc })
+          UpdatePost({
+            id: TargetPost._id,
+            title: postTitle,
+            body: postDesc,
+          })
         ).unwrap();
         toast.success("Updated");
         navigate("/");

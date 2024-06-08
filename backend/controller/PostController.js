@@ -1,4 +1,3 @@
-// controllers/postController.js
 const asyncHandler = require("express-async-handler");
 const Post = require("../model/postmodel.js");
 
@@ -13,25 +12,27 @@ const Fetchpost = asyncHandler(async (req, res) => {
       .json({ message: "Error fetching posts", error: error.message });
   }
 });
+
+// Fetch a single post
 const SinglePost = asyncHandler(async (req, res) => {
   const postId = req.params.id;
   if (!postId) {
-    return res.status(404).json({ message: "Id Manditory" });
+    return res.status(400).json({ message: "Id Mandatory" });
   }
   try {
-    const response = await Post.findById({ _id: postId });
+    const response = await Post.findById(postId);
     if (response) {
-      res.status(200).json({
-        message: `User Fetched in Id: ${postId}`,
-        userId: response.userId,
-        title: response.title,
-        body: response.body,
-      });
+      res.status(200).json(response);
+    } else {
+      res.status(404).json({ message: "Post not found" });
     }
   } catch (error) {
-    res.status(500).json({ error: error });
+    res
+      .status(500)
+      .json({ message: "Error fetching post", error: error.message });
   }
 });
+
 // Add a new post
 const AddnewPost = asyncHandler(async (req, res) => {
   const { userId, title, body } = req.body;
@@ -49,7 +50,8 @@ const AddnewPost = asyncHandler(async (req, res) => {
       .json({ message: "Error creating post", error: error.message });
   }
 });
-//Updatepost
+
+// Update a post
 const UpdatePost = asyncHandler(async (req, res) => {
   const postId = req.params.id;
   const { title, body } = req.body;
@@ -58,40 +60,43 @@ const UpdatePost = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Post ID is required" });
   }
 
-  const post = await Post.findById({ _id: postId });
-
-  if (!post) {
-    return res.status(404).json({ message: "Post Not Found" });
-  }
-
-  post.title = title;
-  post.body = body;
-
   try {
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    post.title = title;
+    post.body = body;
+
     const updatedPost = await post.save();
-    res.status(200).json({
-      message: "Post Updated",
-      title: updatedPost.title,
-      body: updatedPost.body,
-    });
+    res.status(200).json(updatedPost);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Failed to update post" });
+    res
+      .status(500)
+      .json({ message: "Failed to update post", error: error.message });
   }
 });
 
+// Delete a post
 const DeletePost = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  if (id) {
-    const result = await Post.findByIdAndDelete({ _id: id });
+  if (!id) {
+    return res.status(400).json({ message: "Post ID is required" });
+  }
+
+  try {
+    const result = await Post.findByIdAndDelete(id);
     if (result) {
-      res.status(200).json({ message: "Post Deleted" });
+      res.status(200).json({ message: "Post deleted" });
     } else {
-      res.status(404).json({ message: "Id not Match" });
+      res.status(404).json({ message: "Post not found" });
     }
-  } else {
-    res.status(404).json({ message: "Invalid Credentials" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error deleting post", error: error.message });
   }
 });
 
-module.exports = { Fetchpost, AddnewPost, UpdatePost, DeletePost, SinglePost };
+module.exports = { Fetchpost, SinglePost, AddnewPost, UpdatePost, DeletePost };
