@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "http://127.0.0.1:5000/",
   "scripts": {
     "start": "npx tailwindcss -i ./src/index.css -o ./src/style/output.css --watch",
     "dev": "vite",
